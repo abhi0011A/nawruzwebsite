@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>About Us — Naw-Ruz Foundation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --primary:#0f172a;
+            --primary-light:#1e293b;
+            --accent:#f97316;
+            --accent-hover:#ea580c;
+            --bg:#f8fafc;
+            --card:#ffffff;
+            --text:#0f172a;
+            --text-light:#64748b;
+            --font:'Inter',sans-serif;
+            --radius:16px;
+            --shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04)
+        }
+        html{scroll-behavior:smooth}
+        body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+        .container{width:100%;padding:0 16px;max-width:480px;margin:0 auto}
+        @media(min-width:768px){.container{max-width:720px;padding:0 24px}}
+        @media(min-width:1024px){.container{max-width:960px;padding:0 32px}}
+        @media(min-width:1280px){.container{max-width:1100px}}
+
+        #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .4s,visibility .4s}
+        #loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .loader-ring{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        .btn-primary{
+            padding:13px 28px;border:none;
+            background:linear-gradient(135deg,var(--accent),var(--accent-hover));
+            color:#fff;font-size:.85rem;font-weight:600;border-radius:50px;
+            cursor:pointer;transition:.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+            box-shadow:0 4px 16px rgba(249,115,22,.25);
+            -webkit-tap-highlight-color:transparent
+        }
+        .btn-primary:active{transform:scale(.97)}
+        .btn-secondary{
+            padding:12px 26px;border:2px solid rgba(15,23,42,.08);
+            background:transparent;color:var(--text);font-size:.85rem;font-weight:600;border-radius:50px;
+            cursor:pointer;transition:.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px
+        }
+        .btn-secondary:active{transform:scale(.97)}
+
+        section{padding:50px 0}
+        @media(min-width:768px){section{padding:70px 0}}
+
+        .section-header{margin-bottom:28px}
+        @media(min-width:768px){.section-header{margin-bottom:36px;text-align:center}}
+        .section-tag{
+            display:inline-flex;align-items:center;gap:6px;
+            font-size:.68rem;font-weight:600;color:var(--accent);
+            letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px
+        }
+        .section-title{
+            font-size:1.35rem;font-weight:700;color:var(--primary);
+            line-height:1.2;margin-bottom:8px;letter-spacing:-.3px
+        }
+        @media(min-width:768px){.section-title{font-size:1.8rem}}
+        .section-desc{font-size:.85rem;color:var(--text-light);line-height:1.7}
+        @media(min-width:768px){.section-desc{font-size:.92rem;max-width:600px}}
+        @media(min-width:768px){.section-desc.center{margin:0 auto}}
+
+        
+
+        /* ─── MISSION ─── */
+        .mission{background:var(--card)}
+        .mission-grid{display:flex;flex-direction:column;gap:24px}
+        @media(min-width:768px){.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}}
+
+        .mission-img{
+            width:100%;aspect-ratio:16/10;border-radius:var(--radius);
+            display:flex;align-items:center;justify-content:center;
+            position:relative;overflow:hidden
+        }
+        .mission-img .overlay{
+            position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+            flex-direction:column;color:#fff;z-index:2;padding:20px;text-align:center
+        }
+        .mission-img .overlay i{font-size:2.5rem;margin-bottom:10px;opacity:.6}
+        .mission-img .overlay span{font-size:.78rem;opacity:.5}
+        .mission-img.img-1{background:linear-gradient(135deg,#1e40af,#3b82f6)}
+        .mission-img.img-2{background:linear-gradient(135deg,#059669,#34d399)}
+
+        .mission-text h3{font-size:1.2rem;font-weight:700;color:var(--primary);margin-bottom:12px}
+        @media(min-width:768px){.mission-text h3{font-size:1.4rem}}
+        .mission-text p{font-size:.85rem;color:var(--text-light);line-height:1.7;margin-bottom:14px}
+
+        /* ─── VALUES ─── */
+        .values{background:var(--bg)}
+        .values-grid{display:flex;flex-direction:column;gap:12px}
+        @media(min-width:768px){.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}}
+        .value-card{
+            background:var(--card);border-radius:14px;padding:24px;text-align:center;
+            border:1px solid rgba(15,23,42,.04);transition:.35s
+        }
+        .value-card:active{transform:scale(.97)}
+        .value-card .vi{
+            width:48px;height:48px;border-radius:14px;margin:0 auto 14px;
+            display:flex;align-items:center;justify-content:center;font-size:1.1rem
+        }
+        .value-card:nth-child(1) .vi{background:rgba(37,99,235,.08);color:#2563eb}
+        .value-card:nth-child(2) .vi{background:rgba(249,115,22,.08);color:var(--accent)}
+        .value-card:nth-child(3) .vi{background:rgba(16,185,129,.08);color:#059669}
+        .value-card h4{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:6px}
+        .value-card p{font-size:.8rem;color:var(--text-light);line-height:1.6}
+
+        /* ─── PHOTO GALLERY ─── */
+        .gallery{background:var(--card)}
+        .gallery-grid{display:flex;flex-direction:column;gap:14px}
+        @media(min-width:768px){.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}}
+
+        .gallery-item{
+            border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;
+            display:flex;align-items:center;justify-content:center;
+            flex-direction:column;color:#fff;text-align:center;padding:20px;
+            position:relative;transition:.4s
+        }
+        .gallery-item:active{transform:scale(.97)}
+        .gallery-item i{font-size:2.2rem;margin-bottom:10px;opacity:.5}
+        .gallery-item span{font-size:.78rem;opacity:.6;max-width:180px}
+        .gallery-item .tag{
+            position:absolute;bottom:12px;right:12px;
+            font-size:.6rem;font-weight:600;padding:4px 10px;border-radius:50px;
+            background:rgba(255,255,255,.15);opacity:.7
+        }
+        .gallery-item.g1{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+        .gallery-item.g2{background:linear-gradient(135deg,#059669,#6ee7b7)}
+        .gallery-item.g3{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+        .gallery-item.g4{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+        .gallery-item.g5{background:linear-gradient(135deg,#ec4899,#f472b6)}
+        .gallery-item.g6{background:linear-gradient(135deg,var(--accent),#fb923c)}
+
+        /* ─── TEAM ─── */
+        .team{background:var(--bg)}
+        .team-grid{display:flex;flex-direction:column;gap:14px}
+        @media(min-width:768px){.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}}
+        .team-card{
+            background:var(--card);border-radius:14px;padding:24px 16px;text-align:center;
+            border:1px solid rgba(15,23,42,.04);transition:.35s
+        }
+        .team-card:active{transform:scale(.97)}
+        .team-card .ta{
+            width:64px;height:64px;border-radius:50%;margin:0 auto 12px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.3rem;font-weight:700;color:#fff
+        }
+        .team-card:nth-child(1) .ta{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+        .team-card:nth-child(2) .ta{background:linear-gradient(135deg,var(--accent),#fb923c)}
+        .team-card:nth-child(3) .ta{background:linear-gradient(135deg,#059669,#6ee7b7)}
+        .team-card:nth-child(4) .ta{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+        .team-card h4{font-size:.88rem;font-weight:600;color:var(--text)}
+        .team-card .role{font-size:.75rem;color:var(--text-light);margin-top:2px}
+
+        /* ─── CTA ─── */
+        .cta-section{background:var(--bg)}
+        .cta-box{
+            background:var(--card);border-radius:var(--radius);padding:32px 24px;
+            text-align:center;border:1px solid rgba(15,23,42,.04);box-shadow:var(--shadow)
+        }
+        @media(min-width:768px){.cta-box{padding:40px 32px}}
+        .cta-box h2{font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:8px}
+        .cta-box p{font-size:.85rem;color:var(--text-light);margin-bottom:20px}
+        .cta-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+    </style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-ring"></div></div>
+
+
+
+<section class="mission">
+    <div class="container">
+        <div class="mission-grid">
+            <div class="mission-img img-1 reveal">
+                <div class="overlay">
+                    <i class="fas fa-hands-holding-child"></i>
+                    <span>Our team working with local communities</span>
+                </div>
+            </div>
+            <div class="mission-text reveal">
+                <span class="section-tag"><i class="fas fa-bullseye"></i> Our Mission</span>
+                <h3>Building brighter futures through education & skill development</h3>
+                <p>Naw-Ruz Foundation is dedicated to providing job-ready professional certificate courses for students above 12th standard. We believe that every individual deserves access to quality education that leads to meaningful employment and personal growth.</p>
+                <p>Our programs are designed in collaboration with industry experts to ensure that students gain practical, hands-on skills that are in high demand. From E-Commerce and Digital Marketing to Accounts, Taxation, and Life Skills — we cover fields that create real career opportunities.</p>
+                <p>Beyond the classroom, we work directly with communities to identify needs, provide mentorship, and create pathways to economic independence.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="values">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag"><i class="fas fa-heart"></i> Our Values</span>
+            <h2 class="section-title">What drives our work</h2>
+        </div>
+
+        <div class="values-grid">
+            <div class="value-card reveal">
+                <div class="vi"><i class="fas fa-graduation-cap"></i></div>
+                <h4>Education for All</h4>
+                <p>We believe quality education should be accessible to everyone regardless of their background or means.</p>
+            </div>
+            <div class="value-card reveal">
+                <div class="vi"><i class="fas fa-handshake"></i></div>
+                <h4>Community First</h4>
+                <p>We work hand-in-hand with communities to understand their needs and co-create solutions that truly help.</p>
+            </div>
+            <div class="value-card reveal">
+                <div class="vi"><i class="fas fa-leaf"></i></div>
+                <h4>Sustainable Impact</h4>
+                <p>Our focus is on building skills that lead to lasting, meaningful change — not short-term fixes.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="gallery">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag"><i class="fas fa-image"></i> Our Work in Communities</span>
+            <h2 class="section-title">Moments that inspire us</h2>
+            <p class="section-desc">Photos from our programs, community visits, and learning sessions.</p>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item g1 reveal">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Skill development workshop with youth</span>
+                <span class="tag">Workshop</span>
+            </div>
+            <div class="gallery-item g2 reveal">
+                <i class="fas fa-users"></i>
+                <span>Community learning circle in session</span>
+                <span class="tag">Community</span>
+            </div>
+            <div class="gallery-item g3 reveal">
+                <i class="fas fa-child"></i>
+                <span>Children's class celebration event</span>
+                <span class="tag">Celebration</span>
+            </div>
+            <div class="gallery-item g4 reveal">
+                <i class="fas fa-hand-holding-heart"></i>
+                <span>Volunteers distributing learning materials</span>
+                <span class="tag">Outreach</span>
+            </div>
+            <div class="gallery-item g5 reveal">
+                <i class="fas fa-laptop-code"></i>
+                <span>Digital literacy training program</span>
+                <span class="tag">Training</span>
+            </div>
+            <div class="gallery-item g6 reveal">
+                <i class="fas fa-seedling"></i>
+                <span>Community garden & environment project</span>
+                <span class="tag">Environment</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="team">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag"><i class="fas fa-users"></i> Our Team</span>
+            <h2 class="section-title">Meet the people behind Naw-Ruz</h2>
+            <p class="section-desc">Dedicated individuals working tirelessly to empower communities through education.</p>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-card reveal">
+                <div class="ta">AN</div>
+                <h4>Arjun Nair</h4>
+                <div class="role">Founder & Director</div>
+            </div>
+            <div class="team-card reveal">
+                <div class="ta">PM</div>
+                <h4>Priya Mehta</h4>
+                <div class="role">Program Coordinator</div>
+            </div>
+            <div class="team-card reveal">
+                <div class="ta">RK</div>
+                <h4>Ravi Kumar</h4>
+                <div class="role">Community Outreach Lead</div>
+            </div>
+            <div class="team-card reveal">
+                <div class="ta">SN</div>
+                <h4>Sana Naaz</h4>
+                <div class="role">Curriculum Designer</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-box reveal">
+            <h2>Want to know more about our work?</h2>
+            <p>We'd love to connect with you. Reach out to learn about our programs, partnerships, or how you can get involved.</p>
+            <div class="cta-actions">
+                <a href="contacts.html" class="btn-primary">Contact Us <i class="fas fa-arrow-right"></i></a>
+                <a href="displaycourse.html" class="btn-secondary"><i class="fas fa-book"></i> Our Offerings</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="nav.js"></script>
+<script src="footer.js"></script>
+<script>
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hidden'),300));
+
+const revealObserver=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Naw-Ruz — Job-Ready Skills</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --primary:#0f172a;
+            --primary-light:#1e293b;
+            --accent:#f97316;
+            --accent-hover:#ea580c;
+            --bg:#f8fafc;
+            --card:#ffffff;
+            --text:#0f172a;
+            --text-light:#64748b;
+            --font:'Inter',sans-serif;
+            --radius:16px;
+            --shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04)
+        }
+        html{scroll-behavior:smooth}
+        body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+        /* ─── MOBILE-FIRST LAYOUT ─── */
+        .container{width:100%;padding:0 16px;max-width:480px;margin:0 auto}
+        @media(min-width:768px){.container{max-width:720px;padding:0 24px}}
+        @media(min-width:1024px){.container{max-width:960px;padding:0 32px}}
+        @media(min-width:1280px){.container{max-width:1100px}}
+
+        /* ─── LOADER ─── */
+        #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .4s,visibility .4s}
+        #loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .loader-ring{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* ─── HERO ─── */
+        .hero{padding:40px 0 0;position:relative;overflow:hidden}
+        .hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%);z-index:0}
+        .hero .container{position:relative;z-index:1}
+        .hero-badge{
+            display:inline-flex;align-items:center;gap:6px;
+            padding:6px 14px;border-radius:50px;
+            background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.12);
+            font-size:.72rem;font-weight:600;color:var(--accent);margin-bottom:14px
+        }
+        .hero-badge i{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.6rem}
+        .hero h1{
+            font-size:1.8rem;font-weight:800;color:var(--primary);
+            line-height:1.15;letter-spacing:-.5px;margin-bottom:8px
+        }
+        .hero h1.h3 .hl{background:linear-gradient(135deg,var(--accent),#ea580c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .hero p{font-size:.88rem;color:var(--text-light);line-height:1.6;margin-bottom:20px}
+        .hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+        .btn-primary{
+            padding:13px 28px;border:none;
+            background:linear-gradient(135deg,var(--accent),var(--accent-hover));
+            color:#fff;font-size:.85rem;font-weight:600;border-radius:50px;
+            cursor:pointer;transition:.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+            box-shadow:0 4px 16px rgba(249,115,22,.25);
+            -webkit-tap-highlight-color:transparent
+        }
+        .btn-primary:active{transform:scale(.97)}
+        .btn-secondary{
+            padding:12px 26px;border:2px solid rgba(15,23,42,.08);
+            background:transparent;color:var(--text);font-size:.85rem;font-weight:600;border-radius:50px;
+            cursor:pointer;transition:.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+            -webkit-tap-highlight-color:transparent
+        }
+        .btn-secondary:active{transform:scale(.97)}
+
+        .hero-stats{
+            display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:24px;
+            background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
+            border:1px solid rgba(15,23,42,.04)
+        }
+        .hero-stats .hs{text-align:center}
+        .hero-stats .hs .hs-num{font-size:1.2rem;font-weight:700;color:var(--text)}
+        .hero-stats .hs .hs-num .o{color:var(--accent)}
+        .hero-stats .hs .hs-lbl{font-size:.64rem;color:var(--text-light);font-weight:500;margin-top:2px}
+
+        @media(min-width:768px){
+            .hero{padding:60px 0 40px}
+            .hero h1{font-size:2.5rem}
+            .hero p{font-size:.95rem;max-width:640px}
+        }
+        @media(min-width:1024px){
+            .hero h1{font-size:3rem}
+        }
+
+
+        /* ─── HERO · PREMIUM LAYOUT ─── */
+        .hero{padding:48px 0 56px}
+        .hero-bg{background:
+            radial-gradient(600px 400px at 85% 10%,rgba(249,115,22,.12),transparent 60%),
+            radial-gradient(500px 380px at 5% 95%,rgba(37,99,235,.08),transparent 60%),
+            linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%)}
+        .hero-grid{display:grid;gap:36px;align-items:center}
+        @media(min-width:900px){.hero-grid{grid-template-columns:1.1fr .9fr;gap:56px}}
+        .hero-badge{background:#fff;border:1px solid rgba(249,115,22,.22);box-shadow:0 2px 10px rgba(249,115,22,.08);letter-spacing:.4px;text-transform:uppercase;font-size:.68rem}
+        .hero h1{font-size:clamp(2.2rem,6vw,3.5rem);font-weight:800;letter-spacing:-1.2px;line-height:1.05;color:var(--primary);margin-bottom:10px}
+        .hero .tagline{font-size:clamp(1.15rem,3vw,1.55rem);font-weight:600;letter-spacing:-.3px;color:#475569;margin-bottom:18px}
+        .hero .tagline .hl{background:linear-gradient(135deg,var(--accent),#dc2626);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800}
+        .hero-rule{width:64px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--accent),#fbbf24);margin-bottom:22px}
+        .hero .hero-lead{font-size:1rem;line-height:1.8;color:#334155;margin-bottom:16px;max-width:none}
+        .hero .hero-sub{font-size:.92rem;line-height:1.8;color:var(--text-light);margin-bottom:26px;padding-left:16px;border-left:3px solid rgba(249,115,22,.35);max-width:none}
+        .hero .btn-primary{padding:14px 30px;box-shadow:0 8px 24px rgba(249,115,22,.32)}
+        .hero .btn-secondary{background:#fff;border-color:rgba(15,23,42,.1)}
+
+        .hero-visual{position:relative;max-width:480px;width:100%;margin:0 auto}
+        .hero-visual svg{display:block;width:100%;height:auto;border-radius:28px;box-shadow:0 30px 60px -20px rgba(15,23,42,.45),0 8px 20px rgba(15,23,42,.12)}
+        .hero-visual .chip{
+            position:absolute;display:inline-flex;align-items:center;gap:8px;
+            padding:8px 14px;border-radius:50px;background:rgba(255,255,255,.92);
+            backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+            font-size:.72rem;font-weight:600;color:var(--primary);
+            box-shadow:0 10px 24px rgba(15,23,42,.18);white-space:nowrap
+        }
+        .hero-visual .chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+        .hero-visual .chip.c1{top:8%;left:-4%}
+        .hero-visual .chip.c2{top:44%;right:-4%}
+        .hero-visual .chip.c3{bottom:7%;left:6%}
+        .hero-visual .chip.c2::before{background:#2563eb}
+        .hero-visual .chip.c3::before{background:#059669}
+        @media(max-width:480px){.hero-visual .chip.c1{left:2%}.hero-visual .chip.c2{right:2%}}
+        @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .hero-visual .float{animation:heroFloat 5s ease-in-out infinite}
+        @media(prefers-reduced-motion:reduce){.hero-visual .float{animation:none}}
+
+        /* ─── SECTIONS ─── */
+        section{padding:50px 0}
+        @media(min-width:768px){section{padding:70px 0}}
+
+        .section-header{margin-bottom:28px}
+        @media(min-width:768px){.section-header{margin-bottom:36px;text-align:center}}
+        .section-tag{
+            display:inline-flex;align-items:center;gap:6px;
+            font-size:.68rem;font-weight:600;color:var(--accent);
+            letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px
+        }
+        .section-title{
+            font-size:1.35rem;font-weight:700;color:var(--primary);
+            line-height:1.2;margin-bottom:8px;letter-spacing:-.3px
+        }
+        @media(min-width:768px){.section-title{font-size:1.8rem}}
+        .section-desc{font-size:.85rem;color:var(--text-light);line-height:1.7}
+        @media(min-width:768px){.section-desc{font-size:.92rem;max-width:600px;margin-left:auto;margin-right:auto}}
+
+        /* ─── COURSES ─── */
+        .courses{background:var(--card)}
+        .course-grid{display:flex;flex-direction:column;gap:14px}
+        @media(min-width:768px){.course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}}
+        @media(min-width:1024px){.course-grid{grid-template-columns:repeat(3,1fr)}}
+
+        .course-card{
+            background:var(--bg);border-radius:var(--radius);overflow:hidden;
+            transition:.35s;border:1px solid rgba(15,23,42,.04);
+            -webkit-tap-highlight-color:transparent
+        }
+        .course-card:active{transform:scale(.98)}
+        .course-top{
+            padding:18px 18px 0;display:flex;align-items:flex-start;gap:14px
+        }
+        .course-icon{
+            width:44px;height:44px;border-radius:12px;flex-shrink:0;
+            display:flex;align-items:center;justify-content:center;font-size:1rem
+        }
+        .course-card:nth-child(1) .course-icon{background:rgba(37,99,235,.08);color:#2563eb}
+        .course-card:nth-child(2) .course-icon{background:rgba(249,115,22,.08);color:var(--accent)}
+        .course-card:nth-child(3) .course-icon{background:rgba(124,58,237,.08);color:#7c3aed}
+        .course-card:nth-child(4) .course-icon{background:rgba(16,185,129,.08);color:#059669}
+        .course-card:nth-child(5) .course-icon{background:rgba(236,72,153,.08);color:#ec4899}
+        .course-card:nth-child(6) .course-icon{background:rgba(14,165,233,.08);color:#0ea5e9}
+        .course-top .ct{flex:1;min-width:0}
+        .course-top .ct h4{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:2px}
+        .course-top .ct .meta{font-size:.72rem;color:var(--text-light);display:flex;gap:10px;flex-wrap:wrap}
+        .course-top .ct .meta span{display:flex;align-items:center;gap:4px}
+        .course-top .ct .meta i{font-size:.65rem}
+        .course-top .tag{
+            font-size:.6rem;font-weight:600;padding:4px 10px;border-radius:50px;
+            background:rgba(249,115,22,.08);color:var(--accent);white-space:nowrap;flex-shrink:0
+        }
+        .course-card p{
+            padding:0 18px;font-size:.8rem;color:var(--text-light);line-height:1.6;margin:8px 0 12px
+        }
+        .course-bottom{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:12px 18px;border-top:1px solid rgba(15,23,42,.04)
+        }
+        .course-bottom .price{font-size:.9rem;font-weight:700;color:var(--text)}
+        .course-bottom .price small{font-size:.7rem;font-weight:400;color:var(--text-light);text-decoration:line-through;margin-left:6px}
+        .course-bottom .cbtn{
+            padding:7px 18px;border-radius:50px;border:none;
+            background:var(--primary);color:#fff;font-size:.75rem;font-weight:600;
+            cursor:pointer;transition:.3s;text-decoration:none
+        }
+        .course-bottom .cbtn:active{transform:scale(.95)}
+
+        /* ─── WHY US ─── */
+        .why{background:var(--bg)}
+        .why-grid{display:flex;flex-direction:column;gap:12px}
+        @media(min-width:768px){.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}}
+        .why-card{
+            display:flex;align-items:flex-start;gap:14px;
+            background:var(--card);border-radius:14px;padding:18px;
+            border:1px solid rgba(15,23,42,.04);transition:.3s
+        }
+        .why-card:active{transform:scale(.98)}
+        .why-card .wi{
+            width:42px;height:42px;border-radius:12px;flex-shrink:0;
+            display:flex;align-items:center;justify-content:center;font-size:.95rem
+        }
+        .why-card:nth-child(1) .wi{background:rgba(37,99,235,.08);color:#2563eb}
+        .why-card:nth-child(2) .wi{background:rgba(249,115,22,.08);color:var(--accent)}
+        .why-card:nth-child(3) .wi{background:rgba(124,58,237,.08);color:#7c3aed}
+        .why-card:nth-child(4) .wi{background:rgba(16,185,129,.08);color:#059669}
+        .why-card .wd h4{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:2px}
+        .why-card .wd p{font-size:.78rem;color:var(--text-light);line-height:1.6}
+
+        /* ─── OFFERINGS ─── */
+        .offerings{background:var(--card)}
+        .offering-grid{display:flex;flex-direction:column;gap:12px}
+        @media(min-width:768px){.offering-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}}
+        @media(min-width:1024px){.offering-grid{grid-template-columns:repeat(3,1fr)}}
+        .offering-card{
+            background:var(--bg);border-radius:14px;padding:20px;
+            border:1px solid rgba(15,23,42,.04);transition:.35s
+        }
+        .offering-card:active{transform:scale(.98)}
+        .offering-card .oi{
+            width:40px;height:40px;border-radius:10px;margin-bottom:12px;
+            display:flex;align-items:center;justify-content:center;font-size:.9rem
+        }
+        .offering-card:nth-child(1) .oi{background:rgba(37,99,235,.08);color:#2563eb}
+        .offering-card:nth-child(2) .oi{background:rgba(249,115,22,.08);color:var(--accent)}
+        .offering-card:nth-child(3) .oi{background:rgba(16,185,129,.08);color:#059669}
+        .offering-card:nth-child(4) .oi{background:rgba(124,58,237,.08);color:#7c3aed}
+        .offering-card:nth-child(5) .oi{background:rgba(236,72,153,.08);color:#ec4899}
+        .offering-card:nth-child(6) .oi{background:rgba(14,165,233,.08);color:#0ea5e9}
+        .offering-card .oi{width:46px;height:46px;border-radius:12px}
+        .offering-card .oi svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+        .offering-card h4{font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:4px}
+        .offering-card p{font-size:.78rem;color:var(--text-light);line-height:1.6;margin-bottom:10px}
+
+        /* ─── OFFERING DROPDOWN ─── */
+        .offering-grid{align-items:start}
+        .offering-card .o-head{
+            display:flex;align-items:center;justify-content:space-between;gap:12px;
+            cursor:pointer;-webkit-tap-highlight-color:transparent
+        }
+        .offering-card .o-head h4{margin-bottom:0;flex:1}
+        .offering-card .see-btn{
+            display:inline-flex;align-items:center;gap:6px;flex-shrink:0;
+            padding:6px 14px;border-radius:50px;border:1px solid rgba(249,115,22,.25);
+            background:rgba(249,115,22,.08);color:var(--accent);
+            font-family:var(--font);font-size:.75rem;font-weight:600;cursor:pointer;transition:.3s
+        }
+        .offering-card .see-btn::after{
+            content:"";width:6px;height:6px;margin-top:-3px;
+            border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+            transform:rotate(45deg);transition:transform .3s,margin .3s
+        }
+        .offering-card.open .see-btn{background:var(--accent);color:#fff;border-color:var(--accent)}
+        .offering-card.open .see-btn::after{transform:rotate(-135deg);margin-top:3px}
+        .offering-card .o-body{
+            max-height:0;overflow:hidden;opacity:0;
+            transition:max-height .4s ease,opacity .3s ease,margin-top .3s ease
+        }
+        .offering-card.open .o-body{opacity:1;margin-top:12px}
+        .offering-card .o-body p{margin-bottom:0}
+
+        /* ─── SUPPORT (Appeal for Support) ─── */
+        .support{background:var(--bg)}
+        .support .section-desc{max-width:100%}
+        @media(min-width:768px){.support .section-desc{max-width:900px}}
+        .support-card{
+            background:linear-gradient(135deg,var(--primary),#1e293b);
+            border-radius:var(--radius);padding:28px;color:#fff;
+            display:flex;flex-direction:column;gap:16px
+        }
+        @media(min-width:768px){.support-card{flex-direction:row;align-items:center;justify-content:space-between;padding:36px}}
+        .support-card h3{font-size:1.2rem;font-weight:700;line-height:1.3}
+        @media(min-width:768px){.support-card h3{font-size:1.4rem}}
+        .support-card p{font-size:.85rem;opacity:.8;line-height:1.6}
+        .support-card .sp-btn{
+            padding:13px 28px;border:none;background:var(--accent);color:#fff;
+            border-radius:50px;font-weight:600;font-size:.85rem;cursor:pointer;
+            transition:.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+            align-self:flex-start;white-space:nowrap
+        }
+        .support-card .sp-btn:active{transform:scale(.97)}
+
+        /* ─── TESTIMONIALS ─── */
+        .testimonials{background:var(--card)}
+        .testim-grid{display:flex;flex-direction:column;gap:14px}
+        @media(min-width:768px){.testim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}}
+        .testim-card{
+            background:var(--bg);border-radius:14px;padding:20px;
+            border:1px solid rgba(15,23,42,.04);transition:.3s
+        }
+        .testim-card .stars{color:#f59e0b;font-size:.72rem;margin-bottom:8px;letter-spacing:2px}
+        .testim-card blockquote{
+            font-size:.82rem;color:var(--text-light);line-height:1.6;
+            font-style:italic;margin-bottom:12px
+        }
+        .testim-auth{display:flex;align-items:center;gap:10px}
+        .testim-auth .av{
+            width:36px;height:36px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-weight:600;font-size:.75rem;color:#fff;flex-shrink:0
+        }
+        .testim-card:nth-child(1) .av{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+        .testim-card:nth-child(2) .av{background:linear-gradient(135deg,var(--accent),#fb923c)}
+        .testim-card:nth-child(3) .av{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+        .testim-auth .nm{font-size:.82rem;font-weight:600;color:var(--text)}
+        .testim-auth .rl{font-size:.7rem;color:var(--text-light)}
+
+        /* ─── CTA BANNER ─── */
+        .cta-section{background:var(--bg)}
+        .cta-box{
+            background:var(--card);border-radius:var(--radius);padding:32px 24px;
+            text-align:center;border:1px solid rgba(15,23,42,.04);box-shadow:var(--shadow)
+        }
+        @media(min-width:768px){.cta-box{padding:40px 32px}}
+        .cta-box h2{font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:8px}
+        @media(min-width:768px){.cta-box h2{font-size:1.6rem}}
+        .cta-box p{font-size:.85rem;color:var(--text-light);margin-bottom:20px}
+        .cta-box .cta-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+        /* ─── REVEAL ─── */
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+    </style>
+</head>
+<body>
+
+<div id="loader">
+    <div class="loader-ring"></div>
+</div>
+
+<!-- Shared navigation bar: markup + CSS + behavior are injected by navigation.js -->
+<div id="navbar-placeholder"></div>
+
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="container">
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <div class="hero-badge">The Dawn of Brighter</div>
+                <h1>Naw-Ruz Foundation</h1>
+                <h3 class="tagline"><span class="hl">Enlightening Lives,</span> Inspiring Change</h3>
+                <div class="hero-rule"></div>
+                <p class="hero-lead">Naw-Ruz Foundation is a not-for-profit organization committed to creating opportunities through education,
+                    skill development, community engagement, and value-based learning. We believe that education should not merely
+                    prepare individuals for employment but should also cultivate responsible citizens who contribute positively to society.
+                </p>
+                <p class="hero-sub">
+                    Through innovative programs, courses, workshops, discourses, and community initiatives, we strive to bridge the
+                    gap between academic learning and real-world requirements while nurturing ethical leadership and social responsibility.
+                </p>
+                <div class="hero-actions">
+                    <a href="ourofferings.html" class="btn-primary">View All Courses</a>
+                    <a href="displaycourse.html" class="btn-secondary" onclick="loadPage('displaycourse');return false">Watch Overview</a>
+                </div>
+            </div>
+
+            <!-- To use a real photo instead, replace the whole <svg>…</svg> with:
+                 <img src="your-image.jpg" alt="Naw-Ruz Foundation learners" style="width:100%;border-radius:28px;display:block"> -->
+            <div class="hero-visual">
+                <svg viewBox="0 0 480 440" role="img" aria-label="Rising sun above an open book, a graduation cap and a community of learners">
+                    <defs>
+                        <linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e3a5f"/></linearGradient>
+                        <linearGradient id="hsun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdba74"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+                        <radialGradient id="hglow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#f97316" stop-opacity=".55"/><stop offset="1" stop-color="#f97316" stop-opacity="0"/></radialGradient>
+                    </defs>
+                    <rect width="480" height="440" rx="28" fill="url(#hbg)"/>
+                    <circle cx="240" cy="215" r="190" fill="url(#hglow)"/>
+                    <g fill="#fff">
+                        <circle cx="60" cy="50" r="2" opacity=".6"/><circle cx="130" cy="30" r="1.5" opacity=".5"/>
+                        <circle cx="420" cy="48" r="2" opacity=".6"/><circle cx="450" cy="170" r="1.5" opacity=".5"/>
+                        <circle cx="30" cy="200" r="1.5" opacity=".5"/><circle cx="200" cy="22" r="1.5" opacity=".4"/>
+                    </g>
+                    <!-- rising sun -->
+                    <g transform="translate(240 225)" stroke="#fdba74" stroke-width="4" stroke-linecap="round" opacity=".75">
+                        <line y1="-96" y2="-124" transform="rotate(-80)"/><line y1="-96" y2="-124" transform="rotate(-60)"/>
+                        <line y1="-96" y2="-124" transform="rotate(-40)"/><line y1="-96" y2="-124" transform="rotate(-20)"/>
+                        <line y1="-96" y2="-124"/>
+                        <line y1="-96" y2="-124" transform="rotate(20)"/><line y1="-96" y2="-124" transform="rotate(40)"/>
+                        <line y1="-96" y2="-124" transform="rotate(60)"/><line y1="-96" y2="-124" transform="rotate(80)"/>
+                    </g>
+                    <circle cx="240" cy="225" r="72" fill="url(#hsun)"/>
+                    <!-- open book -->
+                    <path d="M98 270 L98 366 C150 351 200 351 240 370 C280 351 330 351 382 366 L382 270" fill="none" stroke="#f97316" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M240 272 C200 254 150 254 108 267 L108 356 C150 343 200 343 240 360 Z" fill="#ffffff"/>
+                    <path d="M240 272 C280 254 330 254 372 267 L372 356 C330 343 280 343 240 360 Z" fill="#eef2f7"/>
+                    <g stroke="#cbd5e1" stroke-width="3" stroke-linecap="round" fill="none">
+                        <path d="M135 288 C165 282 195 284 220 292"/><path d="M135 306 C165 300 195 302 220 310"/><path d="M135 324 C165 318 195 320 220 328"/>
+                        <path d="M260 292 C285 284 315 282 345 288"/><path d="M260 310 C285 302 315 300 345 306"/><path d="M260 328 C285 320 315 318 345 324"/>
+                    </g>
+                    <!-- graduation cap -->
+                    <g class="float">
+                        <g transform="rotate(-8 372 112)">
+                            <path d="M342 118 v26 c0 12 60 12 60 0 v-26 l-30 13z" fill="#e2e8f0"/>
+                            <polygon points="372,84 424,104 372,124 320,104" fill="#ffffff"/>
+                            <path d="M424 104 v30" stroke="#f97316" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="424" cy="138" r="5" fill="#f97316"/>
+                        </g>
+                    </g>
+                    <!-- community of learners -->
+                    <g fill="#ffffff" opacity=".92">
+                        <circle cx="64" cy="132" r="11"/><path d="M44 172 a20 24 0 0 1 40 0 v8 h-40z"/>
+                        <circle cx="104" cy="122" r="13"/><path d="M80 170 a24 28 0 0 1 48 0 v10 h-48z" opacity=".85"/>
+                        <circle cx="146" cy="134" r="10"/><path d="M128 172 a18 22 0 0 1 36 0 v8 h-36z" opacity=".7"/>
+                    </g>
+                </svg>
+                <span class="chip c1">Education</span>
+                <span class="chip c2">Skill Development</span>
+                <span class="chip c3">Community &amp; Values</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="courses">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag"> Certificate Programs</span>
+            <h2 class="section-title">Value-Added, Professional Certification Courses</h2>
+            <p class="section-desc">Our value-added certificate courses are designed to bridge
+                 the gap between traditional education and industry expectations through practical learning, real-world applications, and project-based training.</p>
+        </div>
+
+        <div class="course-grid">
+            <div class="course-card reveal">
+                <div class="course-top">
+                    <div class="ct">
+                        <h4>Certificate in E-Commerce</h4>
+                        <div class="meta"><span> Beginner</span></div>
+                    </div>
+                    <span class="tag">Popular</span>
+                </div>
+                <p>Get familiar with current trends,
+                    needs, and distinctive features within the e-commerce landscape.
+                </p>
+                <div class="course-bottom">
+                   
+                    <a href="enquire.html" class="cbtn">Enquire Now</a>
+                </div>
+            </div>
+
+            <div class="course-card reveal">
+                <div class="course-top">
+                    <div class="ct">
+                        <h4>Certificate in Digital Marketing</h4>
+                        <div class="meta"><span> Beginner</span></div>
+                    </div>
+                    <span class="tag">Trending</span>
+                </div>
+                <p>SEO, Google Ads, social media marketing, email automation — become a certified digital marketing professional.</p>
+                <div class="course-bottom">
+                    
+                    <a href="enquire.html" class="cbtn">Enquire Now</a>
+                </div>
+            </div>
+
+            <div class="course-card reveal"> 
+                <div class="course-top">
+                    <div class="ct">
+                        <h4>Certificate in Accounts Executive</h4>
+                        <div class="meta"><span> Beginner</span></div>
+                    </div>
+                    <span class="tag">New</span>
+                </div>
+                <p>Financial accounting, Tally ERP 9, GST filing, income tax e-filing — complete accounts executive training.</p>
+                <div class="course-bottom">
+                   
+                    <a href="enquire.html" class="cbtn">Enquire Now</a>
+                </div>
+            </div>
+
+            <div class="course-card reveal">
+                <div class="course-top">
+                    <div class="ct">
+                        <h4>Certificate in Procurement</h4>
+                        <div class="meta"><span> Beginner</span></div>
+                    </div>
+                    <span class="tag">Popular</span>
+                </div>
+                <p>Supply chain management, vendor negotiation, purchase orders, contract management & legal compliance.</p>
+                <div class="course-bottom">
+                   
+                    <a href="enquire.html" class="cbtn">Enquire Now</a>
+                </div>
+            </div>
+
+            <div class="course-card reveal">
+                <div class="course-top">
+                    <div class="ct">
+                        <h4>Certificate in Life Skills & Human Values</h4>
+                        <div class="meta"><span> Beginner</span></div>
+                    </div>
+                    <span class="tag">New</span>
+                </div>
+                <p>Develop interpersonal skills, problem-solving abilities, emotional intelligence,
+                    and critical thinking. Explore core human values and their role in personality development.
+                </p>
+                <div class="course-bottom">
+                   
+                    <a href="enquire.html" class="cbtn">Enquire Now</a>
+                </div>
+            </div>
+
+            <div class="course-card reveal">
+                <div class="course-top">
+                    <div class="ct">
+                        <h4>Certificate in Taxation</h4>
+                        <div class="meta"><span> Intermediate</span></div>
+                    </div>
+                    <span class="tag">Trending</span>
+                </div>
+                <p>Direct & indirect taxes, GST (CGST/SGST/IGST), TDS, tax planning strategies, and income tax e-filing.</p>
+                <div class="course-bottom">
+                  
+                    <a href="enquire.html" class="cbtn">Enquire Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="why">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag"> What Naw-Ruz Does</span>
+            <h2 class="section-title">Established for Enlightening Lives, Inspiring Change</h2>
+            <p class="section-desc">We believe in empowering human beings, enhancing community
+                 well-being through right education and actions.
+            </p>
+        </div>
+
+        <div class="why-grid">
+            <div class="why-card reveal">
+                <div class="wd">
+                    <h4>Educational Development</h4>
+                    <p>Creating innovative learning opportunities through certificate courses,
+                         vocational education, discourses, and future educational institutions.
+                    </p>
+                </div>
+            </div>
+            <div class="why-card reveal">
+                <div class="wd">
+                    <h4>Skill Development</h4>
+                    <p>Providing industry-oriented training programs that enhance employability and entrepreneurship.</p>
+                </div>
+            </div>
+            <div class="why-card reveal">
+                <div class="wd">
+                    <h4>Community Development</h4>
+                    <p>Organizing workshops, social initiatives, community clubs, and awareness programs that promote active citizenship.</p>
+                </div>
+            </div>
+            <div class="why-card reveal">
+                <div class="wd">
+                    <h4>Character & Value Education</h4>
+                    <p>Promoting ethical leadership, life skills, universal human values, and social responsibility.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="offerings" id="offerings">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag"> Why Naw-Ruz Foundation?</span>
+            <h2 class="section-title">Let's Build a Better Future Together</h2>
+            <p class="section-desc">At Naw-Ruz Foundation, we believe that education should empower individuals not only to build successful
+                 careers but also to become responsible, ethical, and compassionate members of society.
+                </p>
+        </div>
+
+        <div class="offering-grid">
+
+            <div class="offering-card reveal">
+                <div class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V11l6 4v-4l6 4V4h6v17z"/><path d="M9 21v-3M15 21v-3"/></svg></div>
+                <div class="o-head">
+                    <h4>Industry-Oriented Learning</h4>
+                    <button class="see-btn" type="button" aria-expanded="false">See</button>
+                </div>
+                <div class="o-body">
+                    <p>Our academic and professional programs are developed in consultation with industry experts,
+                        academicians, and practitioners to ensure their relevance in today's dynamic professional
+                        environment. The curriculum emphasizes current industry trends, emerging technologies, and
+                        practical competencies that employers seek. By aligning education with market requirements,
+                        we prepare learners to confidently enter the workforce, pursue entrepreneurial ventures, or
+                        adapt to evolving career opportunities.
+                    </p>
+                </div>
+            </div>
+
+            <div class="offering-card reveal">
+                <div class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+                <div class="o-head">
+                    <h4>Practical and Experiential Education</h4>
+                    <button class="see-btn" type="button" aria-expanded="false">See</button>
+                </div>
+                <div class="o-body">
+                    <p>We strongly believe that meaningful learning extends beyond textbooks and classrooms. Our courses
+                        incorporate case studies, live demonstrations, practical assignments, simulations, project-based
+                        learning, workshops, and hands-on training to provide real-world exposure. This experiential approach
+                        enables learners to apply theoretical concepts in practical situations, enhances critical thinking and
+                        problem-solving abilities, and builds the confidence required to perform effectively in professional settings.
+                    </p>
+                </div>
+            </div>
+
+            <div class="offering-card reveal">
+                <div class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.9 7 23l5-3 5 3-1.2-9.1"/></svg></div>
+                <div class="o-head">
+                    <h4>Affordable Professional Certification Programs</h4>
+                    <button class="see-btn" type="button" aria-expanded="false">See</button>
+                </div>
+                <div class="o-body">
+                    <p>Quality education should be accessible to everyone, regardless of geographical or financial constraints.
+                        Naw-Ruz Foundation is committed to offering professionally designed certification programs at affordable fees,
+                        particularly benefiting students from Tier II, Tier III, and rural regions. By making industry-relevant
+                        education accessible, we strive to reduce educational inequality and create opportunities for learners to
+                        improve their employability and achieve sustainable career growth.
+                    </p>
+                </div>
+            </div>
+
+            <div class="offering-card reveal">
+                <div class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <div class="o-head">
+                    <h4>Community-Centric Initiatives</h4>
+                    <button class="see-btn" type="button" aria-expanded="false">See</button>
+                </div>
+                <div class="o-body">
+                    <p>Our mission extends beyond individual learning to the holistic development of communities. Through workshops,
+                        awareness campaigns, community clubs, educational outreach, social service initiatives, and collaborative programs,
+                        we encourage active participation in community development. We believe that empowered individuals create empowered
+                        communities, and our initiatives foster collaboration, volunteerism, inclusivity, and collective responsibility for
+                        social progress.
+                    </p>
+                </div>
+            </div>
+
+            <div class="offering-card reveal">
+                <div class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+                <div class="o-head">
+                    <h4>Ethical and Value-Based Education</h4>
+                    <button class="see-btn" type="button" aria-expanded="false">See</button>
+                </div>
+                <div class="o-body">
+                    <p>Professional success is most meaningful when accompanied by integrity, compassion, and social responsibility. Alongside
+                        technical knowledge and vocational skills, our programs emphasize universal human values, ethical leadership, character
+                        development, empathy, and responsible citizenship. We strive to nurture individuals who are not only competent professionals
+                        but also conscientious leaders capable of making ethical decisions and contributing positively to society.
+                    </p>
+                </div>
+            </div>
+
+            <div class="offering-card reveal">
+                <div class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                <div class="o-head">
+                    <h4>Vision for Long-Term Educational Transformation</h4>
+                    <button class="see-btn" type="button" aria-expanded="false">See</button>
+                </div>
+                <div class="o-body">
+                    <p>Naw-Ruz Foundation is not limited to conducting short-term educational programs. We are working towards building a comprehensive
+                        educational ecosystem that will nurture learners throughout every stage of their educational journey. Our long-term vision includes
+                        establishing dedicated study centres, community learning hubs, vocational training facilities, research and educational innovation
+                        initiatives, digital learning platforms, and a value-based school that integrates academic excellence with character development.
+                        Through these sustained efforts, we aspire to create lasting social impact by transforming education into a powerful catalyst for
+                        individual empowerment, community development, and nation-building.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="support">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag"> Our Inspirations</span>
+            <p class="section-desc">Be generous in prosperity, and thankful in adversity. Be worthy of the trust of thy neighbor, and look upon him with
+                a bright and friendly face. Be a treasure to the poor, an admonisher to the rich, an answerer to the cry of the needy, a preserver of the
+                sanctity of thy pledge. Be fair in thy judgment, and guarded in thy speech. Be unjust to no man, and show all meekness to all men. Be as a
+                lamp unto them that walk in darkness, a joy to the sorrowful, a sea for the thirsty, a haven for the distressed, an upholder and defender of the
+                victim of oppression. Let integrity and uprightness distinguish all thine acts. Be a home for the stranger, a balm to the suffering, a tower of
+                strength for the fugitive. Be eyes to the blind, and a guiding light unto the feet of the erring. Be an ornament to the countenance of truth, a
+                crown to the brow of fidelity, a pillar of the temple of righteousness, a breath of life to the body of mankind, an ensign of the hosts of justice,
+                a luminary above the horizon of virtue, a dew to the soil of the human heart, an ark on the ocean of knowledge, a sun in the heaven of bounty, a gem
+                on the diadem of wisdom, a shining light in the firmament of thy generation, a fruit upon the tree of humility. — Bahá'í Writing
+            </p>
+        </div>
+
+        <div class="support-card reveal">
+            <div>
+                <h3>To Know More About Us</h3>
+                <p>Naw-Ruz Foundation is a non-profit organization established with the belief that education is the strongest foundation for social transformation.
+                    We envision an inclusive society where individuals from all backgrounds have access to quality education, meaningful employment opportunities,
+                     ethical guidance, and lifelong learning.
+                    </p>
+            </div>
+            <a href="community.html" class="sp-btn" onclick="loadPage('community');return false">Click to know more about Naw-Ruz</a>
+        </div>
+    </div>
+</section>
+
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-box reveal">
+            <h2>Collaborate With Us</h2>
+            <p>Meaningful change is possible only through collaboration. Naw-Ruz Foundation welcomes partnerships with individuals, educational institutions, industries,
+                 corporates, NGOs, philanthropists, professionals, and volunteers who share our vision of empowering communities through education.
+            </p>
+            <div class="cta-actions">
+                <a href="contacts.html" class="btn-primary">Contact Us</a>
+                <a href="ourofferings.html" class="btn-secondary" onclick="loadPage('displaycourse');return true"> View All Courses</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Shared footer: markup + CSS are injected by footer.js -->
+<div id="footer-placeholder"></div>
+
+<script>
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hidden'),300));
+
+const revealObserver=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+/* ─── Offering dropdowns: click "See" (or the title) to open/close ─── */
+document.querySelectorAll('.offering-card .o-head').forEach(head=>{
+    head.addEventListener('click',()=>{
+        const card=head.closest('.offering-card');
+        const body=card.querySelector('.o-body');
+        const btn=card.querySelector('.see-btn');
+        const isOpen=card.classList.toggle('open');
+        body.style.maxHeight=isOpen?body.scrollHeight+'px':'0px';
+        btn.setAttribute('aria-expanded',isOpen);
+        btn.textContent=isOpen?'Hide':'See';
+    });
+});
+
+function loadPage(page){
+    const container=document.getElementById('dynamicContent');
+    if(container)container.innerHTML='<div class="loading" style="text-align:center;padding:60px 20px;color:var(--text-light)">Loading...</div>';
+    console.log('Loading page:',page);
+}
+</script>
+
+<script src="nav.js"></script>
+<script src="footer.js"></script>
+
+</body>
+</html>

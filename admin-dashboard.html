@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Naw-Ruz Foundation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:#f8fafc;color:#0f172a;font-size:14px}
+        header{background:#0f172a;color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+        header h1{font-size:1.1rem}
+        header button{background:#f97316;color:#fff;border:none;padding:8px 16px;border-radius:50px;cursor:pointer;font-weight:600}
+        .wrap{padding:24px;max-width:1200px;margin:0 auto}
+        .login{max-width:360px;margin:80px auto;background:#fff;padding:28px;border-radius:14px;border:1px solid #e2e8f0}
+        .login h2{margin-bottom:16px;font-size:1.2rem}
+        .login input{width:100%;padding:11px;margin-bottom:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:.9rem}
+        .btn{padding:10px 18px;border:none;border-radius:50px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}
+        .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+        .tab{padding:8px 16px;border:1px solid #cbd5e1;background:#fff;border-radius:50px;cursor:pointer;font-weight:600;font-size:.85rem}
+        .tab.active{background:#0f172a;color:#fff;border-color:#0f172a}
+        .count{font-size:.85rem;color:#64748b;margin-bottom:10px}
+        .table-wrap{overflow-x:auto;background:#fff;border-radius:12px;border:1px solid #e2e8f0}
+        table{width:100%;border-collapse:collapse;min-width:700px}
+        th,td{padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:left;vertical-align:top;font-size:.85rem}
+        th{background:#f1f5f9;font-weight:600}
+        .del{background:none;border:1px solid #fca5a5;color:#dc2626;padding:4px 10px;border-radius:50px;cursor:pointer;font-size:.75rem}
+        .hidden{display:none}
+        .err{color:#dc2626;margin-top:10px;font-size:.85rem}
+    </style>
+</head>
+<body>
+
+<div id="loginBox" class="login">
+    <h2>Admin Login</h2>
+    <input id="user" placeholder="Admin username">
+    <input id="pass" type="password" placeholder="Password">
+    <button class="btn" onclick="login()">Login</button>
+    <p id="loginErr" class="err"></p>
+</div>
+
+<div id="dash" class="hidden">
+    <header>
+        <h1>Naw-Ruz Admin Dashboard</h1>
+        <button onclick="logout()">Logout</button>
+    </header>
+    <div class="wrap">
+        <div class="tabs">
+            <button class="tab active" data-tab="enquiries" onclick="show('enquiries')">Course Enquiries</button>
+            <button class="tab" data-tab="contacts" onclick="show('contacts')">Contact Messages</button>
+            <button class="tab" data-tab="volunteers" onclick="show('volunteers')">Volunteers</button>
+            <button class="tab" data-tab="donations" onclick="show('donations')">Donations</button>
+        </div>
+        <p class="count" id="count"></p>
+        <div class="table-wrap"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
+    </div>
+</div>
+
+<script>
+const API = 'http://localhost:8080/api/admin/';
+let authHeader = sessionStorage.getItem('adminAuth') || '';
+let current = 'enquiries';
+
+const COLUMNS = {
+    enquiries: [['createdAt','Date'],['name','Name'],['age','Age'],['email','Email'],['phone','Phone'],['course','Course'],['college','College'],['message','Message']],
+    contacts:  [['createdAt','Date'],['firstName','First Name'],['lastName','Last Name'],['email','Email'],['phone','Phone'],['subject','Subject'],['message','Message']],
+    volunteers:[['createdAt','Date'],['fullName','Name'],['email','Email'],['phone','Phone'],['area','Area'],['motivation','Motivation']],
+    donations: [['createdAt','Date'],['fullname','Name'],['amount','Amount (₹)'],['email','Email'],['phone','Phone'],['pan','PAN'],['city','City'],['state','State'],['pincode','Pincode'],['paymentMethod','Payment'],['address','Address']]
+};
+
+function esc(v) {
+    return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmtDate(v) {
+    return v ? new Date(v).toLocaleString('en-IN') : '';
+}
+
+async function apiGet(path) {
+    const res = await fetch(API + path, { headers: { Authorization: authHeader } });
+    if (res.status === 401) throw new Error('UNAUTH');
+    if (!res.ok) throw new Error('Request failed: ' + res.status);
+    return res.json();
+}
+
+async function login() {
+    authHeader = 'Basic ' + btoa(user.value + ':' + pass.value);
+    try {
+        await apiGet('enquiries');
+        sessionStorage.setItem('adminAuth', authHeader);
+        loginBox.classList.add('hidden');
+        dash.classList.remove('hidden');
+        load(current);
+    } catch (e) {
+        loginErr.textContent = 'Wrong admin username or password.';
+    }
+}
+
+function logout() {
+    sessionStorage.removeItem('adminAuth');
+    authHeader = '';
+    location.reload();
+}
+
+function show(tab) {
+    current = tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    load(tab);
+}
+
+async function load(tab) {
+    try {
+        const list = await apiGet(tab);
+        const cols = COLUMNS[tab];
+        document.getElementById('head').innerHTML =
+            '<tr>' + cols.map(c => `<th>${c[1]}</th>`).join('') + '<th>Action</th></tr>';
+        document.getElementById('body').innerHTML = list.map(row =>
+            '<tr>' + cols.map(([key]) => {
+                const v = key === 'createdAt' ? fmtDate(row[key]) : esc(row[key]);
+                return `<td>${v}</td>`;
+            }).join('') +
+            `<td><button class="del" onclick="remove('${tab}', ${row.id})">Delete</button></td></tr>`
+        ).join('') || `<tr><td colspan="${cols.length + 1}">No entries yet.</td></tr>`;
+        document.getElementById('count').textContent = list.length + ' entries';
+    } catch (e) {
+        if (e.message === 'UNAUTH') logout();
+        else document.getElementById('count').textContent = e.message;
+    }
+}
+
+async function remove(tab, id) {
+    if (!confirm('Delete this entry?')) return;
+    await fetch(API + tab + '/' + id, { method: 'DELETE', headers: { Authorization: authHeader } });
+    load(tab);
+}
+
+// Auto-open if already logged in this session
+if (authHeader) {
+    loginBox.classList.add('hidden');
+    dash.classList.remove('hidden');
+    load(current);
+}
+</script>
+</body>
+</html>

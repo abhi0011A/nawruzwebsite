@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Offerings — Naw-Ruz Foundation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --primary:#0f172a;
+            --primary-light:#1e293b;
+            --accent:#f97316;
+            --accent-hover:#ea580c;
+            --bg:#f8fafc;
+            --card:#ffffff;
+            --text:#0f172a;
+            --text-light:#64748b;
+            --font:'Inter',sans-serif;
+            --radius:16px;
+            --shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04)
+        }
+        html{scroll-behavior:smooth}
+        body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+        .container{width:100%;padding:0 16px;max-width:480px;margin:0 auto}
+        @media(min-width:768px){.container{max-width:720px;padding:0 24px}}
+        @media(min-width:1024px){.container{max-width:960px;padding:0 32px}}
+        @media(min-width:1280px){.container{max-width:1100px}}
+
+        #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .4s,visibility .4s}
+        #loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .loader-ring{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        section{padding:50px 0}
+        @media(min-width:768px){section{padding:60px 0}}
+
+        .section-header{margin-bottom:24px}
+        .section-tag{
+            display:inline-flex;align-items:center;gap:6px;
+            font-size:.68rem;font-weight:600;color:var(--accent);
+            letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px
+        }
+        .section-title{
+            font-size:1.2rem;font-weight:700;color:var(--primary);line-height:1.2;margin-bottom:8px
+        }
+        @media(min-width:768px){.section-title{font-size:1.5rem}}
+
+        /* ─── COURSE LIST ─── */
+        .cour-sec{background:var(--card)}
+        .cour-sec.alt{background:var(--bg)}
+
+        .web-cour{list-style:none;display:flex;flex-direction:column;gap:10px;padding:0}
+
+        .web-cour > li h3{
+            font-size:1rem;font-weight:700;color:var(--primary);
+            padding:16px 0 4px;display:flex;align-items:center;gap:8px
+        }
+        @media(min-width:768px){.web-cour > li h3{font-size:1.1rem}}
+
+        .course-checkbox{display:none}
+
+        .course-toggle{
+            display:flex;align-items:center;gap:10px;
+            background:var(--bg);border-radius:12px;padding:12px 14px;
+            cursor:pointer;transition:.25s;border:1px solid rgba(15,23,42,.04);
+            -webkit-tap-highlight-color:transparent
+        }
+        .course-toggle:active{background:rgba(249,115,22,.04)}
+        .course-toggle .arrow{
+            font-size:.65rem;color:var(--text-light);transition:transform .3s;margin-left:auto;flex-shrink:0
+        }
+        .course-checkbox:checked + .course-toggle .arrow{transform:rotate(90deg)}
+
+        .course-link{
+            text-decoration:none;color:var(--text);font-size:.85rem;font-weight:600;flex:1;min-width:0;
+            transition:color .25s
+        }
+        .course-link:hover{color:var(--accent)}
+
+        .join-btn{
+            padding:5px 16px;border:none;background:var(--accent);color:#fff;
+            border-radius:50px;font-size:.72rem;font-weight:600;cursor:pointer;
+            transition:.3s;flex-shrink:0
+        }
+        .join-btn:active{transform:scale(.95);background:var(--accent-hover)}
+
+        .course-outcomes{
+            display:none;background:var(--card);border-radius:0 0 12px 12px;
+            padding:0 14px 14px;border:1px solid rgba(15,23,42,.04);border-top:0;
+            margin-top:-4px
+        }
+        .course-checkbox:checked ~ .course-outcomes{display:block}
+
+        .outcomes-header{
+            font-size:.78rem;font-weight:600;color:var(--accent);margin-bottom:8px;padding-top:10px
+        }
+        .outcomes-list{
+            list-style:none;display:flex;flex-direction:column;gap:6px;padding:0;margin:0 0 10px
+        }
+        .outcomes-list li{
+            font-size:.78rem;color:var(--text-light);line-height:1.5;
+            padding-left:16px;position:relative
+        }
+        .outcomes-list li::before{
+            content:'\2713';position:absolute;left:0;
+            color:var(--accent);font-weight:700;font-size:.7rem
+        }
+        .course-duration{
+            font-size:.72rem;color:var(--text-light);margin-bottom:8px;padding:8px 0 0;border-top:1px solid rgba(15,23,42,.04)
+        }
+        .close-outcomes{
+            display:inline-block;font-size:.72rem;font-weight:600;color:var(--accent);
+            cursor:pointer;padding:4px 0;transition:.25s
+        }
+        .close-outcomes:active{opacity:.6}
+
+        @media(min-width:768px){
+            .web-cour{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+            .web-cour > li h3{grid-column:1/-1}
+        }
+
+        .btn-primary{
+            padding:13px 28px;border:none;
+            background:linear-gradient(135deg,var(--accent),var(--accent-hover));
+            color:#fff;font-size:.85rem;font-weight:600;border-radius:50px;
+            cursor:pointer;transition:.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+            box-shadow:0 4px 16px rgba(249,115,22,.25);
+            -webkit-tap-highlight-color:transparent
+        }
+        .btn-primary:active{transform:scale(.97)}
+
+        .cta-section{background:var(--bg);padding:40px 0;text-align:center}
+        .cta-section p{font-size:.85rem;color:var(--text-light);margin-bottom:16px}
+
+        .section-tag svg{width:15px;height:15px;fill:currentColor;flex-shrink:0}
+        .btn-primary svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
+
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+    </style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-ring"></div></div>
+
+<div id="navbar-placeholder"></div>
+
+<section class="cour-sec">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3 1 9l11 6 9-4.91V17h2V9L12 3z"/></svg> Launched Courses</span>
+            <h2 class="section-title">Enroll now and start learning</h2>
+        </div>
+
+        <ul class="web-cour" id="coursesList">
+
+            <!-- Course 1 -->
+            <li class="reveal">
+                <input type="checkbox" id="course1" class="course-checkbox">
+                <label for="course1" class="course-toggle">
+                    <a href="course-ecommerce.html" class="course-link">Certificate Course in E-Commerce</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20E-Commerce"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>Build and manage online stores using platforms like Shopify & WooCommerce</li>
+                        <li>Understand digital payment systems (Razorpay, PayPal, Stripe)</li>
+                        <li>Learn inventory management and order fulfillment</li>
+                        <li>Master digital marketing for e-commerce (SEO, Google Ads, Social Media)</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes</div>
+                    <label for="course1" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 2 -->
+            <li class="reveal">
+                <input type="checkbox" id="course2" class="course-checkbox">
+                <label for="course2" class="course-toggle">
+                    <a href="course-digital-marketing.html" class="course-link">Certificate Course in Digital Marketing</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20Digital%20Marketing"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>Search Engine Optimization (SEO) - On-page & Off-page techniques</li>
+                        <li>Search Engine Marketing (SEM) & Google Ads campaign management</li>
+                        <li>Social Media Marketing (Facebook, Instagram, LinkedIn, Twitter)</li>
+                        <li>Email Marketing & Marketing Automation</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes</div>
+                    <label for="course2" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 3 -->
+            <li class="reveal">
+                <input type="checkbox" id="course3" class="course-checkbox">
+                <label for="course3" class="course-toggle">
+                    <a href="course-accounts.html" class="course-link">Certificate Course in Accounts Executive</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20Accounts%20Executive"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>Principles of Financial Accounting & Bookkeeping</li>
+                        <li>GST filing and compliance</li>
+                        <li>Tally ERP 9 & Tally Prime with GST</li>
+                        <li>Income Tax calculation and e-filing</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes</div>
+                    <label for="course3" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 4 -->
+            <li class="reveal">
+                <input type="checkbox" id="course4" class="course-checkbox">
+                <label for="course4" class="course-toggle">
+                    <a href="course-procurement.html" class="course-link">Certificate Course in Procurement</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20Procurement"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>Procurement Process & Supply Chain Management</li>
+                        <li>Vendor Management & Negotiation Skills</li>
+                        <li>Purchase Order Management</li>
+                        <li>Contract Management & Legal Compliance</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes</div>
+                    <label for="course4" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 5 -->
+            <li class="reveal">
+                <input type="checkbox" id="course5" class="course-checkbox">
+                <label for="course5" class="course-toggle">
+                    <a href="course-life-skills.html" class="course-link">Certificate Course in Life Skills & Human Values</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20Life%20Skills%20%26%20Human%20Values"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>Communication Skills & Interpersonal Effectiveness</li>
+                        <li>Emotional Intelligence & Self-awareness</li>
+                        <li>Critical Thinking & Problem Solving</li>
+                        <li>Time Management & Goal Setting</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes</div>
+                    <label for="course5" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 6 -->
+            <li class="reveal">
+                <input type="checkbox" id="course6" class="course-checkbox">
+                <label for="course6" class="course-toggle">
+                    <a href="course-taxation.html" class="course-link">Certificate Course in Taxation</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20Taxation"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>Direct Taxes - Income Tax Act, TDS, Advance Tax</li>
+                        <li>Indirect Taxes - GST (CGST, SGST, IGST, UTGST)</li>
+                        <li>Tax Planning & Tax Saving Strategies</li>
+                        <li>E-filing of Income Tax Returns</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes</div>
+                    <label for="course6" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <div id="adminCoursesContainer"></div>
+        </ul>
+    </div>
+</section>
+
+<section class="cour-sec alt">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2c3 2.5 4.5 6 4.5 9.5V16h-9v-4.5C7.5 8 9 4.5 12 2zm0 5.2a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8z"/><path d="M7.5 12 4 15.5V19l3.5-2zM16.5 12 20 15.5V19l-3.5-2zM10 17.5h4L12 22z"/></svg> Upcoming Courses</span>
+            <h2 class="section-title">Coming soon — stay tuned</h2>
+        </div>
+
+        <ul class="web-cour">
+
+            <!-- Course 7 -->
+            <li class="reveal">
+                <input type="checkbox" id="course7" class="course-checkbox">
+                <label for="course7" class="course-toggle">
+                    <a href="import-export.html" class="course-link">Certificate Course in Import & Export</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20Import%20%26%20Export"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>International Trade Documentation & Procedures</li>
+                        <li>Customs Clearance & Tariffs</li>
+                        <li>Incoterms 2020 & International Contracts</li>
+                        <li>Foreign Exchange & Payment Terms (LC, DA, DP)</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes (Coming Soon)</div>
+                    <label for="course7" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 8 -->
+            <li class="reveal">
+                <input type="checkbox" id="course8" class="course-checkbox">
+                <label for="course8" class="course-toggle">
+                    <a href="share-market.html" class="course-link">Certificate Course in Share Market</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20Share%20Market"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>Stock Market Basics & Terminology</li>
+                        <li>Fundamental Analysis of Companies</li>
+                        <li>Technical Analysis & Chart Patterns</li>
+                        <li>Intraday Trading & Swing Trading Strategies</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes (Coming Soon)</div>
+                    <label for="course8" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 9 -->
+            <li class="reveal">
+                <input type="checkbox" id="course9" class="course-checkbox">
+                <label for="course9" class="course-toggle">
+                    <a href="advanced-excel.html" class="course-link">Certificate Course in Advanced Excel</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20Advanced%20Excel"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>Advanced Formulas (VLOOKUP, XLOOKUP, INDEX-MATCH)</li>
+                        <li>Pivot Tables & Power Pivot for Data Analysis</li>
+                        <li>Data Visualization with Charts & Conditional Formatting</li>
+                        <li>What-If Analysis, Goal Seek & Solver</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Y
+                        es (Coming Soon)</div>
+                    <label for="course9" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 10 -->
+            <li class="reveal">
+                <input type="checkbox" id="course10" class="course-checkbox">
+                <label for="course10" class="course-toggle">
+                    <a href="vba-excel.html" class="course-link">Certificate Course in VBA Excel</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20VBA%20Excel"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>VBA Programming Basics & Editor Environment</li>
+                        <li>Variables, Data Types & Procedures</li>
+                        <li>Loops, Conditions & Error Handling</li>
+                        <li>UserForms & Custom Dialog Boxes</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes (Coming Soon)</div>
+                    <label for="course10" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 11 -->
+            <li class="reveal">
+                <input type="checkbox" id="course11" class="course-checkbox">
+                <label for="course11" class="course-toggle">
+                    <a href="sap-course.html" class="course-link">Certificate Course in SAP</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20SAP"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>SAP Fundamentals & Navigation</li>
+                        <li>FI (Financial Accounting) Module</li>
+                        <li>CO (Controlling) Module</li>
+                        <li>MM (Materials Management) Module</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes (Coming Soon)</div>
+                    <label for="course11" class="close-outcomes">Close</label>
+                </div>
+            </li>
+
+            <!-- Course 12 -->
+            <li class="reveal">
+                <input type="checkbox" id="course12" class="course-checkbox">
+                <label for="course12" class="course-toggle">
+                    <a href="powerbi-course.html" class="course-link">Certificate Course in Power BI</a>
+                    <a href="enquire.html?course=Certificate%20Course%20in%20Power%20BI"><button class="join-btn">Enquire</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">
+                        <li>Power BI Desktop & Architecture</li>
+                        <li>Data Transformation with Power Query</li>
+                        <li>Data Modeling & Relationships</li>
+                        <li>DAX Formulas & Measures</li>
+                    </ul>
+                    <div class="course-duration">&#9201; Duration: x Hours | &#128220; Certification: Yes (Coming Soon)</div>
+                    <label for="course12" class="close-outcomes">Close</label>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <p>Want to suggest a course or have questions? We'd love to hear from you.</p>
+        <a href="contacts.html" class="btn-primary">Contact Us <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h12.2l-4.6-4.6L13 5l7 7-7 7-1.4-1.4 4.6-4.6H4z"/></svg></a>
+    </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="nav.js"></script>
+<script src="footer.js"></script>
+<script>
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hidden'),300));
+
+const revealObserver=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+// ─── Admin added courses ───
+const defaultCourseNames = [
+    "Certificate Course in E-Commerce",
+    "Certificate Course in Digital Marketing",
+    "Certificate Course in Accounts Executive",
+    "Certificate Course in Procurement",
+    "Certificate Course in Life Skills & Human Values",
+    "Certificate Course in Taxation",
+    "Certificate Course in Import & Export",
+    "Certificate Course in Share Market",
+    "Certificate Course in Advanced Excel",
+    "Certificate Course in VBA Excel",
+    "Certificate Course in SAP",
+    "Certificate Course in Power BI"
+];
+
+let adminCourseCounter = 100;
+
+function loadAdminCourses() {
+    const container = document.getElementById('adminCoursesContainer');
+    let courses = localStorage.getItem('publicCourses');
+    if (courses) {
+        courses = JSON.parse(courses);
+    } else {
+        container.innerHTML = '';
+        return;
+    }
+    const adminCourses = courses.filter(course => !defaultCourseNames.includes(course.name));
+    if (adminCourses.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+    let html = '';
+    adminCourses.forEach((course, index) => {
+        const uniqueId = `admin_course_${adminCourseCounter + index}`;
+        let outcomesList = '';
+        if (course.outcomes && course.outcomes.length > 0) {
+            course.outcomes.forEach(outcome => {
+                outcomesList += `<li>${escapeHtml(outcome)}</li>`;
+            });
+        } else {
+            outcomesList = `
+                <li>Comprehensive training with industry experts</li>
+                <li>Hands-on projects and real-world assignments</li>
+                <li>Lifetime access to course materials</li>
+                <li>Certificate upon successful completion</li>
+            `;
+        }
+        html += `
+            <li>
+                <input type="checkbox" id="${uniqueId}" class="course-checkbox">
+                <label for="${uniqueId}" class="course-toggle">
+                    <a href="#" class="course-link" onclick="return false;">${escapeHtml(course.name)}</a>
+                    <a href="register.html?course=${encodeURIComponent(course.name)}"><button class="join-btn">Join</button></a>
+                    <span class="arrow">&#9654;</span>
+                </label>
+                <div class="course-outcomes">
+                    <div class="outcomes-header">What You'll Learn:</div>
+                    <ul class="outcomes-list">${outcomesList}</ul>
+                    <div class="course-duration">&#9201; Duration: ${escapeHtml(course.duration)} | &#128220; Certification: Yes</div>
+                    <label for="${uniqueId}" class="close-outcomes">Close</label>
+                </div>
+            </li>
+        `;
+    });
+    container.innerHTML = html;
+    adminCourseCounter += adminCourses.length;
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+loadAdminCourses();
+window.addEventListener('storage', function(e) {
+    if (e.key === 'publicCourses') loadAdminCourses();
+});
+setInterval(loadAdminCourses, 3000);
+</script>
+
+</body>
+</html>

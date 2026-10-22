@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Enquire — Naw-Ruz Foundation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --primary:#0f172a;
+            --primary-light:#1e293b;
+            --accent:#f97316;
+            --accent-hover:#ea580c;
+            --bg:#f8fafc;
+            --card:#ffffff;
+            --text:#0f172a;
+            --text-light:#64748b;
+            --font:'Inter',sans-serif;
+            --radius:16px;
+            --shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04)
+        }
+        html{scroll-behavior:smooth}
+        body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+        .container{width:100%;padding:0 16px;max-width:480px;margin:0 auto}
+        @media(min-width:768px){.container{max-width:720px;padding:0 24px}}
+        @media(min-width:1024px){.container{max-width:960px;padding:0 32px}}
+        @media(min-width:1280px){.container{max-width:1100px}}
+
+        #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .4s,visibility .4s}
+        #loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .loader-ring{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        .nav-bar{position:sticky;top:0;width:100%;z-index:1000;background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(15,23,42,0.04)}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 16px;max-width:1100px;margin:0 auto}
+        .nav-left{display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0}
+        .logo{height:32px;width:32px;border-radius:8px;object-fit:cover;flex-shrink:0}
+        .nav-brand{font-size:.95rem;font-weight:700;color:var(--primary);letter-spacing:-.3px}
+        .hamburger{display:flex;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:6px;z-index:1001}
+        .hamburger span{display:block;width:22px;height:2.5px;background:var(--text);border-radius:2px;transition:.3s}
+        .hamburger.active span:nth-child(1){transform:translateY(6.5px)rotate(45deg)}
+        .hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0)}
+        .hamburger.active span:nth-child(3){transform:translateY(-6.5px)rotate(-45deg)}
+        .nav-links{
+            position:fixed;top:0;right:-100%;width:280px;height:100vh;
+            background:rgba(255,255,255,0.98);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+            padding:80px 28px 28px;list-style:none;
+            transition:right .35s cubic-bezier(.16,1,.3,1);
+            box-shadow:-10px 0 40px rgba(0,0,0,.06);overflow-y:auto
+        }
+        .nav-links.open{right:0}
+        .nav-links li a{
+            display:flex;align-items:center;gap:10px;
+            padding:14px 0;border-bottom:1px solid rgba(15,23,42,.04);
+            text-decoration:none;color:var(--text);font-size:.9rem;font-weight:500;transition:color .25s
+        }
+        .nav-links li a:hover{color:var(--accent)}
+        .nav-links li a i{width:20px;text-align:center;font-size:.85rem;color:var(--text-light)}
+        .nav-cta-mobile{
+            display:flex;align-items:center;justify-content:center;gap:8px;
+            margin-top:20px;padding:14px;border-radius:12px;
+            background:var(--accent);color:#fff !important;font-weight:600;font-size:.9rem;
+            text-decoration:none;border:none !important
+        }
+        .nav-overlay{position:fixed;inset:0;background:rgba(15,23,42,.3);z-index:999;opacity:0;visibility:hidden;transition:.3s}
+        .nav-overlay.show{opacity:1;visibility:visible}
+
+        @media(min-width:768px){
+            .hamburger,.nav-overlay,.nav-cta-mobile{display:none !important}
+            .nav-inner{padding:0 24px;height:68px}
+            .nav-links{
+                position:static;width:auto;height:auto;background:transparent;
+                -webkit-backdrop-filter:none;backdrop-filter:none;
+                padding:0;box-shadow:none;overflow:visible;
+                display:flex;align-items:center;gap:4px
+            }
+            .nav-links li a{border-bottom:none;padding:8px 14px;font-size:.85rem;border-radius:8px}
+            .nav-links li a i{display:none}
+            .nav-links li a:hover{background:rgba(15,23,42,.04);color:var(--primary)}
+        }
+
+        section{padding:50px 0}
+        @media(min-width:768px){section{padding:70px 0}}
+
+        .section-header{margin-bottom:28px}
+        @media(min-width:768px){.section-header{margin-bottom:36px;text-align:center}}
+        .section-tag{
+            display:inline-flex;align-items:center;gap:6px;
+            font-size:.68rem;font-weight:600;color:var(--accent);
+            letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px
+        }
+        .section-title{
+            font-size:1.35rem;font-weight:700;color:var(--primary);
+            line-height:1.2;margin-bottom:8px;letter-spacing:-.3px
+        }
+        @media(min-width:768px){.section-title{font-size:1.8rem}}
+        .section-desc{font-size:.85rem;color:var(--text-light);line-height:1.7}
+        @media(min-width:768px){.section-desc{font-size:.92rem;max-width:600px;margin:0 auto}}
+
+        .enq-form{
+            background:var(--card);border-radius:var(--radius);padding:28px 20px;
+            border:1px solid rgba(15,23,42,.04);box-shadow:var(--shadow);
+            max-width:600px;margin:0 auto
+        }
+        .enq-form h3{font-size:1.05rem;font-weight:700;color:var(--primary);margin-bottom:4px}
+        .enq-form .sub{font-size:.82rem;color:var(--text-light);margin-bottom:20px}
+        .form-field{margin-bottom:16px}
+        .form-field label{display:block;font-size:.8rem;font-weight:600;color:var(--text);margin-bottom:4px}
+        .form-field input,.form-field select,.form-field textarea{
+            width:100%;padding:11px 14px;border:1px solid rgba(15,23,42,.08);
+            border-radius:10px;font-size:.85rem;font-family:var(--font);
+            background:var(--bg);transition:.3s;outline:none
+        }
+        .form-field input:focus,.form-field select:focus,.form-field textarea:focus{
+            border-color:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,.08)
+        }
+        .form-field textarea{resize:vertical;min-height:100px}
+        .form-field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+        .form-row{display:flex;flex-direction:column;gap:14px}
+        @media(min-width:768px){.form-row{flex-direction:row;gap:14px}.form-row .form-field{flex:1}}
+
+        .btn-primary{
+            padding:13px 28px;border:none;
+            background:linear-gradient(135deg,var(--accent),var(--accent-hover));
+            color:#fff;font-size:.85rem;font-weight:600;border-radius:50px;
+            cursor:pointer;transition:.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+            box-shadow:0 4px 16px rgba(249,115,22,.25);
+            -webkit-tap-highlight-color:transparent;justify-content:center;width:100%
+        }
+        .btn-primary:active{transform:scale(.97)}
+        .btn-primary:disabled{opacity:.6;cursor:not-allowed}
+
+        .form-error{
+            display:none;background:rgba(220,38,38,.08);color:#dc2626;
+            border-radius:10px;padding:10px 14px;font-size:.8rem;margin-bottom:16px
+        }
+
+        .success-msg{
+            display:none;text-align:center;padding:40px 20px
+        }
+        .success-msg .icon{
+            width:60px;height:60px;border-radius:50%;margin:0 auto 16px;
+            background:rgba(16,185,129,.1);color:#059669;
+            display:flex;align-items:center;justify-content:center;font-size:1.5rem
+        }
+        .success-msg h3{font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:6px}
+        .success-msg p{font-size:.85rem;color:var(--text-light);margin-bottom:20px}
+
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+    </style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-ring"></div></div>
+
+<!-- Navbar injected here by nav.js -->
+<div id="navbar-placeholder"></div>
+
+<section>
+    <div class="container">
+        <div class="reveal">
+            <div class="enq-form" id="enqForm">
+                <h3>Course Enquiry</h3>
+                <p class="sub">Fill in your details below so a teacher can contact you.</p>
+
+                <div class="form-error" id="formError"></div>
+
+                <form id="enquireForm" onsubmit="submitEnquiry(event)">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Full Name <span style="color:var(--accent)">*</span></label>
+                            <input type="text" id="fullName" placeholder="Your full name" required>
+                        </div>
+                        <div class="form-field">
+                            <label>Age</label>
+                            <input type="number" id="age" placeholder="Your age" min="1" max="100">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Email Address <span style="color:var(--accent)">*</span></label>
+                            <input type="email" id="email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-field">
+                            <label>Phone Number <span style="color:var(--accent)">*</span></label>
+                            <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Course Interested In <span style="color:var(--accent)">*</span></label>
+                        <select id="course" required>
+                            <option value="">— Select a course —</option>
+                            <optgroup label="Launched Courses">
+                                <option value="Certificate Course in E-Commerce">Certificate Course in E-Commerce</option>
+                                <option value="Certificate Course in Digital Marketing">Certificate Course in Digital Marketing</option>
+                                <option value="Certificate Course in Accounts Executive">Certificate Course in Accounts Executive</option>
+                                <option value="Certificate Course in Procurement">Certificate Course in Procurement</option>
+                                <option value="Certificate Course in Life Skills & Human Values">Certificate Course in Life Skills & Human Values</option>
+                                <option value="Certificate Course in Taxation">Certificate Course in Taxation</option>
+                            </optgroup>
+                            <optgroup label="Upcoming Courses">
+                                <option value="Certificate Course in Import & Export">Certificate Course in Import & Export</option>
+                                <option value="Certificate Course in Share Market">Certificate Course in Share Market</option>
+                                <option value="Certificate Course in Advanced Excel">Certificate Course in Advanced Excel</option>
+                                <option value="Certificate Course in VBA Excel">Certificate Course in VBA Excel</option>
+                                <option value="Certificate Course in SAP">Certificate Course in SAP</option>
+                                <option value="Certificate Course in Power BI">Certificate Course in Power BI</option>
+                            </optgroup>
+                            <option value="Other">Other (not listed)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>College <span style="color:var(--accent)">*</span></label>
+                        <input type="text" id="colname" placeholder="College name" required>
+                    </div>
+
+                    <div class="form-field" id="otherCourseField" style="display:none">
+                        <label>Please specify the course name</label>
+                        <input type="text" id="otherCourse" placeholder="Type the course name">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Message (optional)</label>
+                        <textarea id="message" placeholder="Any questions or specific requirements..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        Submit Enquiry <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="success-msg" id="successMsg">
+                <div class="icon"><i class="fas fa-check"></i></div>
+                <h3>Enquiry Submitted!</h3>
+                <p>Thank you for your interest. A teacher will contact you shortly regarding the course.</p>
+                <a href="ourofferings.html" class="btn-primary" style="width:auto;display:inline-flex">Browse More Courses <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer injected here by footer.js -->
+<div id="footer-placeholder"></div>
+
+<script src="nav.js"></script>
+<script src="footer.js"></script>
+
+<script>
+window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 300);
+    NawAuth.guardForm('enquireForm');
+});
+
+const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// Pre-select the course if the link came from ourofferings.html?course=...
+const params = new URLSearchParams(window.location.search);
+const courseParam = params.get('course');
+if (courseParam) {
+    const select = document.getElementById('course');
+    const option = Array.from(select.options).find(o => o.value === courseParam);
+    if (option) {
+        select.value = courseParam;
+    } else {
+        select.value = 'Other';
+        document.getElementById('otherCourseField').style.display = 'block';
+        document.getElementById('otherCourse').value = courseParam;
+    }
+}
+
+document.getElementById('course').addEventListener('change', function () {
+    document.getElementById('otherCourseField').style.display = this.value === 'Other' ? 'block' : 'none';
+});
+
+/* ─── SUBMIT TO SPRING BOOT BACKEND ─── */
+const API_BASE = 'http://localhost:8080/api';
+
+function showFormError(msg) {
+    const errBox = document.getElementById('formError');
+    errBox.textContent = msg;
+    errBox.style.display = 'block';
+}
+function hideFormError() {
+    document.getElementById('formError').style.display = 'none';
+}
+
+async function submitEnquiry(e) {
+    e.preventDefault();
+    hideFormError();
+
+    const name = document.getElementById('fullName').value.trim();
+    const ageVal = document.getElementById('age').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    let course = document.getElementById('course').value;
+    const otherCourse = document.getElementById('otherCourse').value.trim();
+    const college = document.getElementById('colname').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!name || !email || !phone || !course || !college) {
+        showFormError('Please fill in all required fields.');
+        return;
+    }
+    if (course === 'Other' && otherCourse) {
+        course = otherCourse;
+    }
+
+    const enquiry = {
+        name,
+        age: ageVal ? parseInt(ageVal, 10) : null,
+        email,
+        phone,
+        course,
+        college,
+        message
+    };
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    try {
+        const res = await fetch(`${API_BASE}/enquiries`, {
+            method: 'POST',
+            headers: NawAuth.authHeaders(),
+            body: JSON.stringify(enquiry)
+        });
+
+        if (res.status === 401) {
+            throw new Error('Please login to submit an enquiry.');
+        }
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+
+        document.getElementById('enqForm').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+    } catch (err) {
+        console.error('Failed to submit enquiry:', err);
+        showFormError(err.message === 'Please login to submit an enquiry.'
+            ? err.message
+            : 'Could not submit your enquiry. Please make sure the server is running and try again.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit Enquiry <i class="fas fa-arrow-right"></i>';
+    }
+}
+</script>
+
+</body>
+</html>
